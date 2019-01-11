@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Details"
+             x:Class="AppUDP.Pages.BroadcastUDPPage">
+    <ContentPage.Content>
+        <StackLayout Spacing="10" Padding="10">
+            <Entry x:Name="Comando" Placeholder="Comando" HorizontalOptions="FillAndExpand" />
+            <Label Text="Tempo de espera em milissegundos: " />
+            <StackLayout Orientation="Horizontal">
+                <Stepper x:Name="Tempo" Minimum="50" Maximum="10000" Increment="50" ValueChanged="Tempo_ValueChanged" />
+                <Label  Text="50" x:Name="TempoStepper" FontSize="24" Margin="6" WidthRequest="60" />
+            </StackLayout>
+            <Button Text="Buscar" Command="{Binding ActionBuscarCommand}"  CommandParameter="{Binding Source={x:Reference Comando}, Path=Text}" />
+            <ScrollView>
+                <ListView SelectedItem="{Binding ReceiveSelected}" ItemsSource="{Binding Receives}" HasUnevenRows = "true">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Spacing="4" Padding="10" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding IP}" />
+                                    <Label Text="{Binding Port}" />
+                                    <Label Text="{Binding Response}" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
