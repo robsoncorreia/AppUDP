@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Editar"
+             x:Class="AppUDP.Pages.UDP.BotoesEditarPage">
+    <ContentPage.Content>
+        <StackLayout Spacing="10" Padding="10">
+            <Entry x:Name="EtIP" Text="{Binding Comando.IP}"
+                   Placeholder="IP"
+                   HorizontalOptions="FillAndExpand" />
+            <Entry x:Name="EtPort" Text="{Binding Comando.Port}"
+                   Placeholder="Port"
+                   HorizontalOptions="FillAndExpand" />
+            <Entry x:Name="EtComando" Text="{Binding Comando.Send}"
+                   Placeholder="Comando"
+                   HorizontalOptions="FillAndExpand" />
+            <Entry x:Name="EtNomeBotao" Text="{Binding Comando.ButtonName}"
+                   Placeholder="Nome do Botão"
+                   HorizontalOptions="FillAndExpand" />
+            <Button x:Name="BtnTestarBotao" Text="Testar" Command="{Binding TestarCommand}"/>
+            <Button x:Name="BtnEditarBotao" Text="Editar" Command="{Binding EditarBotaoCommand}"/>
+            <Button x:Name="BtnApagarBotao" Text="Apagar" Command="{Binding ApagarBotaoCommand}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

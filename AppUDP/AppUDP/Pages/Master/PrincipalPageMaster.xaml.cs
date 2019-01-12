@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using AppUDP.Pages.UDP;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -28,7 +29,9 @@ namespace AppUDP.Pages.Master
             {
                 MenuItems = new ObservableCollection<PrincipalPageMenuItem>(new[]
                 {
-                    new PrincipalPageMenuItem { Id = 0, Title = "UDP BROADCAST", TargetType = typeof(BroadcastUDPPage)}
+                     new PrincipalPageMenuItem { Id = 0, Title = "CRIAR BOTÃO", TargetType = typeof(BotoesEditarPage)},
+                    new PrincipalPageMenuItem { Id = 1, Title = "BOTÕES", TargetType = typeof(BotoesPage)},
+                    new PrincipalPageMenuItem { Id = 2, Title = "UDP BROADCAST", TargetType = typeof(BroadcastUdpPage)}
                 });
             }
 

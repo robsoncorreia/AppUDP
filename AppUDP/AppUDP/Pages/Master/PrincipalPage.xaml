@@ -2,7 +2,7 @@
 <MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                   xmlns:pages="clr-namespace:AppUDP.Pages.Master"
-                  xmlns:pagesUdp="clr-namespace:AppUDP.Pages"
+                  xmlns:pagesUdp="clr-namespace:AppUDP.Pages.UDP"
                   x:Class="AppUDP.Pages.Master.PrincipalPage">
     <MasterDetailPage.Master>
         <pages:PrincipalPageMaster x:Name="MasterPage" />
@@ -10,7 +10,7 @@
     <MasterDetailPage.Detail>
         <NavigationPage>
             <x:Arguments>
-                <pagesUdp:BroadcastUDPPage />
+                <pagesUdp:BotoesPage />
             </x:Arguments>
         </NavigationPage>
     </MasterDetailPage.Detail>

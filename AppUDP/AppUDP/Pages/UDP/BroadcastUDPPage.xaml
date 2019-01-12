@@ -2,25 +2,27 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="Details"
-             x:Class="AppUDP.Pages.BroadcastUDPPage">
+             x:Class="AppUDP.Pages.BroadcastUdpPage">
     <ContentPage.Content>
         <StackLayout Spacing="10" Padding="10">
             <Entry x:Name="Comando" Placeholder="Comando" HorizontalOptions="FillAndExpand" />
             <Label Text="Tempo de espera em milissegundos: " />
             <StackLayout Orientation="Horizontal">
-                <Stepper x:Name="Tempo" Minimum="50" Maximum="10000" Increment="50" ValueChanged="Tempo_ValueChanged" />
-                <Label  Text="50" x:Name="TempoStepper" FontSize="24" Margin="6" WidthRequest="60" />
+                <Stepper x:Name="Tempo" Minimum="0" Maximum="10000" Increment="100" />
+                <Label  x:Name="TempoStepper" FontSize="24" Margin="6" WidthRequest="60" />
             </StackLayout>
-            <Button Text="Buscar" Command="{Binding ActionBuscarCommand}"  CommandParameter="{Binding Source={x:Reference Comando}, Path=Text}" />
+            <Button x:Name="Buscar" Text="Buscar" Command="{Binding ActionBuscarCommand}"  CommandParameter="{Binding Source={x:Reference Comando}, Path=Text}" />
             <ScrollView>
-                <ListView SelectedItem="{Binding ReceiveSelected}" ItemsSource="{Binding Receives}" HasUnevenRows = "true">
+                <ListView SelectedItem="{Binding ComandoSelected}" 
+                          ItemsSource="{Binding Comandos}" 
+                          HasUnevenRows = "true">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout Spacing="4" Padding="10" HorizontalOptions="FillAndExpand">
                                     <Label Text="{Binding IP}" />
                                     <Label Text="{Binding Port}" />
-                                    <Label Text="{Binding Response}" />
+                                    <Label Text="{Binding Receive}" />
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>

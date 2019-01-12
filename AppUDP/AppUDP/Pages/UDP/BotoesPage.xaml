@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Botões"
+             x:Class="AppUDP.Pages.UDP.BotoesPage">
+    <ContentPage.Content>
+        <ListView x:Name="LwComandos" SelectedItem="{Binding SelectedComando}" ItemsSource="{Binding Comandos}" HasUnevenRows = "true">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell >
+                        <StackLayout Spacing="4" Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Button Image="Assets/AppList/AppList.png" VerticalOptions="Center"  Command="{Binding ClickButtom}" />
+                            <StackLayout Spacing="4" Padding="10">
+                                <Label Text="{Binding ButtonName}" FontSize="Small" />
+                                <!--<Label Text="{Binding IP}" FontSize="Micro" />
+                                <Label Text="{Binding Port}" FontSize="Micro" />-->
+                                <Label Text="{Binding Send}" FontSize="Micro" />
+                            </StackLayout>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

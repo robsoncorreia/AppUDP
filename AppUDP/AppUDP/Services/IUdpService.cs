@@ -6,7 +6,7 @@ namespace AppUDP.Service
 {
     public interface IUdpService
     {
-        List<Receive> Responses { get; set; }
+        List<Comando> Responses { get; set; }
 
         Task Broadcast(int port = 9999, string comando = "oi", int timer = 1000);
 

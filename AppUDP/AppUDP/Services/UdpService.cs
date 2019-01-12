@@ -13,11 +13,11 @@ namespace AppUDP.Service
 {
     public class UdpService : IUdpService
     {
-        public List<Receive> Responses { get; set; }
+        public List<Comando> Responses { get; set; }
 
         public UdpService()
         {
-            Responses = new List<Receive>();
+            Responses = new List<Comando>();
         }
 
         public void Send(string ip, string buf, int port = 6666)
@@ -79,11 +79,11 @@ namespace AppUDP.Service
 
                         responses++;
 
-                        Responses.Add(new Receive
+                        Responses.Add(new Comando
                         {
-                            Response = Encoding.ASCII.GetString(bytes, 0, bytes.Length),
+                            Receive = Encoding.ASCII.GetString(bytes, 0, bytes.Length),
                             IP = groupEP.Address.ToString(),
-                            Port = groupEP.Port.ToString()
+                            Port = groupEP.Port
                         });
                     }
                 }

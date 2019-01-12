@@ -12,13 +12,19 @@ using Xamarin.Forms.Xaml;
 namespace AppUDP.Pages.UDP
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CreateButtonPage : ContentPage
+    public partial class BotoesEditarPage : ContentPage
     {
-        public CreateButtonPage(Receive receive)
+        public BotoesEditarPage(Comando comando)
         {
             InitializeComponent();
 
-            BindingContext = new CreateButtonViewModel(receive, Navigation);
+            BindingContext = new BotoesEditarViewModel(this, comando);
+        }
+        public BotoesEditarPage()
+        {
+            InitializeComponent();
+
+            BindingContext = new BotoesEditarViewModel(this, new Comando());
         }
     }
 }

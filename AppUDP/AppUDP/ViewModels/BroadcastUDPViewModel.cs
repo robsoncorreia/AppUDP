@@ -1,4 +1,5 @@
 ﻿using AppUDP.Models;
+using AppUDP.Pages;
 using AppUDP.Pages.UDP;
 using AppUDP.Service;
 using System;
@@ -8,53 +9,93 @@ using Xamarin.Forms;
 
 namespace AppUDP.ViewModels
 {
-    public class BroadcastUDPViewModel : BaseViewModel
+    public class BroadcastUdpViewModel : BaseViewModel
     {
-        private Receive _receiveSelected;
+        private BroadcastUdpPage _broadcastUDPPage;
+
+        private Comando _comandoSelected;
 
         private INavigation _navigation;
 
-        public Receive ReceiveSelected
+        private Stepper Tempo { get; set; }
+
+        private Label TempoStepper { get; set; }
+
+        private Button BtnBuscar { get; set; }
+
+        public Comando ComandoSelected
         {
-            get { return _receiveSelected; }
+            get { return _comandoSelected; }
             set
             {
-                _receiveSelected = value;
+                _comandoSelected = value;
                 if (value == null) return;
-                OpenModal(value);
+                AbrirPagina(value);
             }
         }
 
-        private async void OpenModal(Receive value)
+        private async void AbrirPagina(Comando value)
         {
-            await _navigation.PushModalAsync(new NavigationPage(new BroadcastUdpDetailPage(value)), true);
+            await _navigation.PushAsync(new BotoesEditarPage(value));
         }
 
         private readonly IUdpService udpService;
 
         public ICommand ActionBuscarCommand { get; set; }
-        public ObservableCollection<Receive> Receives { get; set; }
+        public ObservableCollection<Comando> Comandos { get; set; }
 
-        public BroadcastUDPViewModel(INavigation navigation)
+        public BroadcastUdpViewModel(BroadcastUdpPage broadcastUDPPage)
         {
-            _navigation = navigation;
-            Receives = new ObservableCollection<Receive>();
+            _broadcastUDPPage = broadcastUDPPage;
+
+            Tempo = _broadcastUDPPage.FindByName<Stepper>("Tempo");
+
+            BtnBuscar = _broadcastUDPPage.FindByName<Button>("Buscar");
+
+            TempoStepper = _broadcastUDPPage.FindByName<Label>("TempoStepper");
+
+            TempoStepper.Text = Tempo.Value.ToString();
+
+            Tempo.ValueChanged += Tempo_Changed;
+
+            _navigation = _broadcastUDPPage.Navigation;
+            Comandos = new ObservableCollection<Comando>();
             udpService = new UdpService();
 
             ActionBuscarCommand = new Command<string>(Buscar);
         }
 
+        private void Tempo_Changed(object sender, ValueChangedEventArgs e)
+        {
+            TempoStepper.Text = e.NewValue.ToString();
+        }
+
         private async void Buscar(string comando)
         {
-            if (string.IsNullOrEmpty(comando)) return;
-            await udpService.Broadcast(comando: comando);
-
-            Receives.Clear();
+            if (string.IsNullOrEmpty(comando))
+            {
+                await _broadcastUDPPage.DisplayAlert("Erro", "Preencha o campo Comando", "Fechar");
+                return;
+            }
+            DesabilitarBotao(BtnBuscar);
+            await udpService.Broadcast(comando: comando, timer: int.Parse(Tempo.Value.ToString()));
+            HabilitarBotao(BtnBuscar);
+            Comandos.Clear();
 
             foreach (var item in udpService.Responses)
             {
-                Receives.Add(item);
+                Comandos.Add(item);
             }
+        }
+
+        private void HabilitarBotao(Button button)
+        {
+            button.IsEnabled = true;
+        }
+
+        private void DesabilitarBotao(Button button)
+        {
+            button.IsEnabled = false;
         }
     }
 }

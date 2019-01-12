@@ -1,5 +1,4 @@
-﻿using AppUDP.Models;
-using AppUDP.ViewModels;
+﻿using AppUDP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +11,12 @@ using Xamarin.Forms.Xaml;
 namespace AppUDP.Pages.UDP
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class BroadcastUdpDetailPage : ContentPage
+    public partial class BotoesPage : ContentPage
     {
-        public BroadcastUdpDetailPage(Receive value)
+        public BotoesPage()
         {
             InitializeComponent();
-            BindingContext = new BroadcastUdpDetailViewModel(value, Navigation);
+            BindingContext = new BotoesViewModel(this);
         }
     }
 }
