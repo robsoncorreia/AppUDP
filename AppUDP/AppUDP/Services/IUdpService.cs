@@ -1,6 +1,6 @@
-﻿using AppUDP.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AppUDP.Models;
 
 namespace AppUDP.Service
 {
@@ -8,10 +8,8 @@ namespace AppUDP.Service
     {
         List<Comando> Responses { get; set; }
 
-        Task Broadcast(int port = 9999, string comando = "oi", int timer = 1000);
-
+        Task Broadcast(string ip = null, int port = 9999, string comando = "oi", int timer = 1000);
         void Send(string ip, string buf, int port = 6666);
-
-        Task<string> SendAsync(string ip, int port, string comando);
+        Task<string> SendAsync(string ip, int port, string Comando);
     }
 }

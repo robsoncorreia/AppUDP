@@ -3,6 +3,8 @@ using AppUDP.Pages.UDP;
 using AppUDP.Service;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Net;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -17,6 +19,12 @@ namespace AppUDP.ViewModels
 
         private Entry EtComando;
 
+        public ObservableCollection<Comando> Comandos { get; set; }
+
+        Button BtnTestarBotao { get; set; }
+
+        Button BtnEditarBotao { get; set; }
+
         public ICommand TestarCommand { get; set; }
         public ICommand ApagarBotaoCommand { get; set; }
         public ICommand EditarBotaoCommand { get; set; }
@@ -27,7 +35,12 @@ namespace AppUDP.ViewModels
 
         public BotoesEditarViewModel(BotoesEditarPage botoesDetalhePage, Comando comando)
         {
-            EtComando  = botoesDetalhePage.FindByName<Entry>("EtComando");
+            Comandos = new ObservableCollection<Comando>();
+            botoesDetalhePage.Title = comando.Id == 0 ? "CRIAR" : "EDITAR";
+            BtnTestarBotao = botoesDetalhePage.FindByName<Button>("BtnTestarBotao");
+            BtnEditarBotao = botoesDetalhePage.FindByName<Button>("BtnEditarBotao");
+            BtnEditarBotao.Text = comando.Id == 0 ? "Criar" : "Editar";
+            EtComando = botoesDetalhePage.FindByName<Entry>("EtComando");
             EtIP = botoesDetalhePage.FindByName<Entry>("EtIP");
             EtPort = botoesDetalhePage.FindByName<Entry>("EtPort");
             ApagarBotaoCommand = new Command(ApagarBotao);
@@ -40,22 +53,47 @@ namespace AppUDP.ViewModels
 
         private async void Testar(object obj)
         {
-            if (string.IsNullOrEmpty(EtIP.Text))
+            IPAddress address;
+
+            DesabilitarBotao(BtnTestarBotao);
+
+            if (!IPAddress.TryParse(EtIP.Text, out address))
             {
-                await botoesDetalhePage.DisplayAlert("Erro", "Preencha o campo IP", "Fechar");
+                await botoesDetalhePage.DisplayAlert("Erro", "IP inválido.", "Fechar");
+                HabilitarBotao(BtnTestarBotao);
                 return;
             }
             if (string.IsNullOrEmpty(EtPort.Text))
             {
                 await botoesDetalhePage.DisplayAlert("Erro", "Preencha o campo Porta", "Fechar");
+                HabilitarBotao(BtnTestarBotao);
                 return;
             }
             if (string.IsNullOrEmpty(EtComando.Text))
             {
                 await botoesDetalhePage.DisplayAlert("Erro", "Preencha o campo Comando", "Fechar");
+                HabilitarBotao(BtnTestarBotao);
                 return;
             }
-            await _udpService.SendAsync(comando: Comando.Send, port: Comando.Port, ip: Comando.IP);
+            await _udpService.Broadcast(comando: Comando.Send, port: Comando.Port, ip: Comando.IP);
+
+            Comandos.Clear();
+
+            foreach (var item in _udpService.Responses)
+            {
+                Comandos.Add(item);
+            }
+            HabilitarBotao(BtnTestarBotao);
+        }
+
+        private void HabilitarBotao(Button button)
+        {
+            button.IsEnabled = true;
+        }
+
+        private void DesabilitarBotao(Button button)
+        {
+            button.IsEnabled = false;
         }
 
         private async void EditarBotao(object obj)

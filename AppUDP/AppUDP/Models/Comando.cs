@@ -25,14 +25,14 @@ namespace AppUDP.Models
             }
         }
 
-        private string _buttonName;
+        private string _nomeBotao;
 
-        public string ButtonName
+        public string NomeBotao
         {
-            get { return _buttonName; }
+            get { return _nomeBotao; }
             set
             {
-                _buttonName = value;
+                _nomeBotao = value;
                 NotifyPropertyChanged();
             }
         }

@@ -15,9 +15,10 @@ namespace AppUDP.ViewModels
         private Comando _selectedComando;
 
         public Comando SelectedComando
-        {   
+        {
             get { return _selectedComando; }
-            set {
+            set
+            {
                 _selectedComando = value;
                 if (value == null) return;
                 AbrirBotaoDetalhePage(value);
@@ -27,7 +28,7 @@ namespace AppUDP.ViewModels
 
         private async void AbrirBotaoDetalhePage(Comando value)
         {
-            await _botoesPage.Navigation.PushAsync(new BotoesEditarPage(value));
+            await _botoesPage.Navigation.PushAsync(new BotoesEditarPage(value) { Title = "Editar" });
         }
 
         public List<Comando> Comandos { get; set; } = new List<Comando>();

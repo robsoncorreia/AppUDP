@@ -50,6 +50,8 @@ namespace AppUDP.ViewModels
 
             Tempo = _broadcastUDPPage.FindByName<Stepper>("Tempo");
 
+            Tempo.Value = 500;
+
             BtnBuscar = _broadcastUDPPage.FindByName<Button>("Buscar");
 
             TempoStepper = _broadcastUDPPage.FindByName<Label>("TempoStepper");
@@ -59,7 +61,9 @@ namespace AppUDP.ViewModels
             Tempo.ValueChanged += Tempo_Changed;
 
             _navigation = _broadcastUDPPage.Navigation;
+
             Comandos = new ObservableCollection<Comando>();
+
             udpService = new UdpService();
 
             ActionBuscarCommand = new Command<string>(Buscar);

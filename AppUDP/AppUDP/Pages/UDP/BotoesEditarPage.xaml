@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Editar"
              x:Class="AppUDP.Pages.UDP.BotoesEditarPage">
     <ContentPage.Content>
         <StackLayout Spacing="10" Padding="10">
@@ -14,12 +13,29 @@
             <Entry x:Name="EtComando" Text="{Binding Comando.Send}"
                    Placeholder="Comando"
                    HorizontalOptions="FillAndExpand" />
-            <Entry x:Name="EtNomeBotao" Text="{Binding Comando.ButtonName}"
+            <Entry x:Name="EtNomeBotao" Text="{Binding Comando.NomeBotao}"
                    Placeholder="Nome do Botão"
                    HorizontalOptions="FillAndExpand" />
             <Button x:Name="BtnTestarBotao" Text="Testar" Command="{Binding TestarCommand}"/>
             <Button x:Name="BtnEditarBotao" Text="Editar" Command="{Binding EditarBotaoCommand}"/>
             <Button x:Name="BtnApagarBotao" Text="Apagar" Command="{Binding ApagarBotaoCommand}"/>
+            <ScrollView>
+                <ListView SelectedItem="{Binding ComandoSelected}" 
+                          ItemsSource="{Binding Comandos}" 
+                          HasUnevenRows = "true">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Spacing="4" Padding="10" HorizontalOptions="FillAndExpand">
+                                    <Label Text="{Binding IP}" />
+                                    <Label Text="{Binding Port}" />
+                                    <Label Text="{Binding Receive}" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

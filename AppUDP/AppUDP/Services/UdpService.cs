@@ -39,7 +39,7 @@ namespace AppUDP.Service
 
         private UdpClient listener;
 
-        public async Task Broadcast(int port = 9999, string comando = "oi", int timer = 1000)
+        public async Task Broadcast(string ip = null, int port = 9999, string comando = "oi", int timer = 1000)
         {
             int responses = 0;
 
@@ -51,17 +51,15 @@ namespace AppUDP.Service
 
             Task t1 = Task.Factory.StartNew(() =>
             {
+                IPAddress address;
+
                 listener = new UdpClient(port);
 
-                IPEndPoint groupEP = new IPEndPoint(IPAddress.Broadcast, port);
-
-                // UdpClient client = new UdpClient();
-
-                IPEndPoint address = new IPEndPoint(IPAddress.Broadcast, 9999);
+                IPEndPoint groupEP = new IPEndPoint(ip != null ? IPAddress.Parse(ip) : IPAddress.Broadcast, port);
 
                 byte[] bytes2 = Encoding.ASCII.GetBytes(comando);
 
-                listener.Send(bytes2, bytes2.Length, address);
+                listener.Send(bytes2, bytes2.Length, groupEP);
 
                 //client.Close();
 
