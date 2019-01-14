@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace AppUDP.Models
@@ -11,7 +12,48 @@ namespace AppUDP.Models
     [Table("Comando")]
     public class Comando : INotifyPropertyChanged
     {
+
+
         private readonly IUdpService updpService = new UdpService();
+
+        private int _tempoEsperaResposta = 100;
+
+        public int TempoEspera
+        {
+            get { return _tempoEsperaResposta; }
+            set
+            {
+                _tempoEsperaResposta = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool _isBotaoHabilitado;
+
+        public bool IsBotaoHabilitado
+        {
+            get { return _isBotaoHabilitado; }
+            set
+            {
+                _isBotaoHabilitado = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
+
+        private string _respostaBotao;
+
+        public string RespostaBotao
+        {
+            get { return _respostaBotao; }
+            set
+            {
+                _respostaBotao = value;
+                NotifyPropertyChanged();
+            }
+        }
+
 
         public ICommand ClickButtom
         {
@@ -20,8 +62,33 @@ namespace AppUDP.Models
                 return new Command((e) =>
                 {
                     var item = (e as Comando);
-                    updpService.SendAsync(IP, Port, Send);
+                    Enviar();
                 });
+            }
+        }
+
+        private async void Enviar()
+        {
+            IsBotaoHabilitado = false;
+            RespostaBotao = await updpService.SendAsync(IP, Port, Send, TempoEspera);
+            Vibrar(30);
+            IsBotaoHabilitado = true;
+        }
+
+        private void Vibrar(int duracao)
+        {
+            try
+            {
+                var duration = TimeSpan.FromMilliseconds(duracao);
+                Vibration.Vibrate(duration);
+            }
+            catch (FeatureNotSupportedException ex)
+            {
+                // Feature not supported on device
+            }
+            catch (Exception ex)
+            {
+                // Other error has occurred.
             }
         }
 

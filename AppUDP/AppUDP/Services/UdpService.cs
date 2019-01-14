@@ -51,7 +51,6 @@ namespace AppUDP.Service
 
             Task t1 = Task.Factory.StartNew(() =>
             {
-                IPAddress address;
 
                 listener = new UdpClient(port);
 
@@ -112,7 +111,7 @@ namespace AppUDP.Service
             tokenSource.Cancel();
         }
 
-        public async Task<string> SendAsync(string ip, int port, string Comando)
+        public async Task<string> SendAsync(string ip, int port, string Comando, int tempoEspera)
         {
             string parseIp = IPAddress.Parse(ip).ToString();
 
@@ -165,7 +164,7 @@ namespace AppUDP.Service
                 Debug.WriteLine("The Task is interrupted");
             }, TaskContinuationOptions.OnlyOnCanceled);
 
-            await Task.Delay(200);
+            await Task.Delay(tempoEspera);
 
             tokenSource.Cancel();
 

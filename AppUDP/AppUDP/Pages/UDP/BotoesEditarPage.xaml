@@ -16,10 +16,17 @@
             <Entry x:Name="EtNomeBotao" Text="{Binding Comando.NomeBotao}"
                    Placeholder="Nome do Botão"
                    HorizontalOptions="FillAndExpand" />
-            <Button x:Name="BtnTestarBotao" Text="Testar" Command="{Binding TestarCommand}"/>
-            <Button x:Name="BtnEditarBotao" Text="Editar" Command="{Binding EditarBotaoCommand}"/>
-            <Button x:Name="BtnApagarBotao" Text="Apagar" Command="{Binding ApagarBotaoCommand}"/>
-            <ScrollView>
+            <Label Text="Tempo de espera: " />
+            <StackLayout Orientation="Horizontal" Spacing="4">
+                <Stepper x:Name="StTempoEspera" Value="{Binding Comando.TempoEspera}" Minimum="99" Maximum="10000" Increment="100"/>
+                <Label x:Name="LbValorStepper" Margin="10"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Spacing="10">
+                <Button Padding="10" HorizontalOptions="Start" x:Name="BtnTestarBotao" Text="Testar" Command="{Binding TestarCommand}"/>
+                <Button Padding="10" HorizontalOptions="Start" x:Name="BtnEditarBotao" Text="Editar" Command="{Binding EditarBotaoCommand}"/>
+                <Button Padding="10" HorizontalOptions="Start" x:Name="BtnApagarBotao" Text="Apagar" Command="{Binding ApagarBotaoCommand}"/>
+            </StackLayout>
+            <ScrollView VerticalOptions="StartAndExpand">
                 <ListView SelectedItem="{Binding ComandoSelected}" 
                           ItemsSource="{Binding Comandos}" 
                           HasUnevenRows = "true">

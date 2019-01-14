@@ -11,6 +11,8 @@ namespace AppUDP.ViewModels
 {
     public class BroadcastUdpViewModel : BaseViewModel
     {
+
+        private Entry EtSend { get; set; }
         private BroadcastUdpPage _broadcastUDPPage;
 
         private Comando _comandoSelected;
@@ -36,6 +38,10 @@ namespace AppUDP.ViewModels
 
         private async void AbrirPagina(Comando value)
         {
+            ComandoSelected = null;
+            value.Send = EtSend.Text;
+            value.TempoEspera = int.Parse(Tempo.Value.ToString());
+            value.NomeBotao = $"{value.Send} {value.IP}";
             await _navigation.PushAsync(new BotoesEditarPage(value));
         }
 
@@ -49,6 +55,8 @@ namespace AppUDP.ViewModels
             _broadcastUDPPage = broadcastUDPPage;
 
             Tempo = _broadcastUDPPage.FindByName<Stepper>("Tempo");
+
+            EtSend = broadcastUDPPage.FindByName<Entry>("EtSend");
 
             Tempo.Value = 500;
 
@@ -66,7 +74,7 @@ namespace AppUDP.ViewModels
 
             udpService = new UdpService();
 
-            ActionBuscarCommand = new Command<string>(Buscar);
+            ActionBuscarCommand = new Command<object>(Buscar);
         }
 
         private void Tempo_Changed(object sender, ValueChangedEventArgs e)
@@ -74,15 +82,15 @@ namespace AppUDP.ViewModels
             TempoStepper.Text = e.NewValue.ToString();
         }
 
-        private async void Buscar(string comando)
+        private async void Buscar(object ob)
         {
-            if (string.IsNullOrEmpty(comando))
+            if (string.IsNullOrEmpty(EtSend.Text))
             {
                 await _broadcastUDPPage.DisplayAlert("Erro", "Preencha o campo Comando", "Fechar");
                 return;
             }
             DesabilitarBotao(BtnBuscar);
-            await udpService.Broadcast(comando: comando, timer: int.Parse(Tempo.Value.ToString()));
+            await udpService.Broadcast(comando: EtSend.Text, timer: int.Parse(Tempo.Value.ToString()));
             HabilitarBotao(BtnBuscar);
             Comandos.Clear();
 

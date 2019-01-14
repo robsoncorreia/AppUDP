@@ -2,12 +2,25 @@
 using AppUDP.Pages.UDP;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Xamarin.Forms;
 
 namespace AppUDP.ViewModels
 {
     public class BotoesViewModel : BaseViewModel
     {
+  
+        public ObservableCollection<Comando> RespostasComandos { get; set; }
+
+        private Comando _respostaComandoSelected;
+
+        public Comando RespostaComandoSelected
+        {
+            get { return _respostaComandoSelected; }
+            set { _respostaComandoSelected = value; }
+        }
+
+
         private ListView _lwComandos;
 
         private BotoesPage _botoesPage;
@@ -35,9 +48,17 @@ namespace AppUDP.ViewModels
 
         public BotoesViewModel(BotoesPage botoesPage)
         {
+            RespostasComandos = new ObservableCollection<Comando>();
             _botoesPage = botoesPage;
             _lwComandos = _botoesPage.FindByName<ListView>("LwComandos");
-            Comandos = App.Database.GetItemsAsync().Result;
+
+            PegarComandos();
+            
+        }
+
+        private  void PegarComandos()
+        {
+            Comandos =  App.Database.GetItemsAsync().Result;
         }
     }
 }

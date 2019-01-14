@@ -31,7 +31,7 @@ namespace AppUDP.Pages.Master
                 {
                     new PrincipalPageMenuItem { Id = 0, Title = "CRIAR BOTÃO", TargetType = typeof(BotoesEditarPage)},
                     new PrincipalPageMenuItem { Id = 1, Title = "BOTÕES", TargetType = typeof(BotoesPage)},
-                    new PrincipalPageMenuItem { Id = 2, Title = "UDP BROADCAST", TargetType = typeof(BroadcastUdpPage)}
+                    new PrincipalPageMenuItem { Id = 2, Title = "BROADCAST", TargetType = typeof(BroadcastUdpPage)}
                 });
             }
             #region INotifyPropertyChanged Implementation

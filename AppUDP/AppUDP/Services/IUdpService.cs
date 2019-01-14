@@ -10,6 +10,6 @@ namespace AppUDP.Service
 
         Task Broadcast(string ip = null, int port = 9999, string comando = "oi", int timer = 1000);
         void Send(string ip, string buf, int port = 6666);
-        Task<string> SendAsync(string ip, int port, string Comando);
+        Task<string> SendAsync(string ip, int port, string Comando, int tempoEspera);
     }
 }

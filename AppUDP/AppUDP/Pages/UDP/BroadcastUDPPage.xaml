@@ -5,15 +5,15 @@
              x:Class="AppUDP.Pages.BroadcastUdpPage">
     <ContentPage.Content>
         <StackLayout Spacing="10" Padding="10">
-            <Entry x:Name="Comando" Placeholder="Comando" HorizontalOptions="FillAndExpand" />
-            <Label Text="Tempo de espera em milissegundos: " />
-            <StackLayout Orientation="Horizontal">
+            <Entry x:Name="EtSend" Placeholder="Comando" HorizontalOptions="FillAndExpand" />
+            <Label Text="Tempo de espera: " Margin="0,10,0,0" />
+            <StackLayout Spacing="10" Orientation="Horizontal" VerticalOptions="StartAndExpand">
                 <Stepper x:Name="Tempo" Minimum="0" Maximum="10000" Increment="100" />
-                <Label  x:Name="TempoStepper" FontSize="24" Margin="6" WidthRequest="60" />
+                <Label  x:Name="TempoStepper"  WidthRequest="60" />
             </StackLayout>
-            <Button x:Name="Buscar" Text="Buscar" Command="{Binding ActionBuscarCommand}"  CommandParameter="{Binding Source={x:Reference Comando}, Path=Text}" />
-            <ScrollView>
-                <ListView SelectedItem="{Binding ComandoSelected}" 
+            <Button Padding="10" HorizontalOptions="Start" x:Name="Buscar" Text="Buscar" Command="{Binding ActionBuscarCommand}" />
+            <ScrollView VerticalOptions="Start">
+                <ListView SelectedItem="{Binding ComandoSelected, Mode=TwoWay}" 
                           ItemsSource="{Binding Comandos}" 
                           HasUnevenRows = "true">
                     <ListView.ItemTemplate>

@@ -10,7 +10,7 @@
                     <DataTemplate>
                         <ViewCell >
                             <StackLayout Spacing="4" Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                                <Button Padding="10" Text="{Binding NomeBotao}" VerticalOptions="Center"  Command="{Binding ClickButtom}" />
+                                <Button IsEnabled="{Binding IsBotaoHabilitado}" Padding="10" Text="{Binding NomeBotao}" VerticalOptions="Center"  Command="{Binding ClickButtom}" />
                                 <StackLayout Spacing="4" Padding="10">
                                     <Label Text="{Binding IP}" FontSize="Micro" />
                                     <Label Text="{Binding Send}" FontSize="Micro" />

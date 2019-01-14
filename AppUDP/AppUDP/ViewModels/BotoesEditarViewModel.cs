@@ -1,4 +1,5 @@
 ﻿using AppUDP.Models;
+using AppUDP.Pages.Master;
 using AppUDP.Pages.UDP;
 using AppUDP.Service;
 using System;
@@ -7,24 +8,29 @@ using System.Collections.ObjectModel;
 using System.Net;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace AppUDP.ViewModels
 {
     public class BotoesEditarViewModel : BaseViewModel
     {
+
+        public ObservableCollection<Comando> Respostas { get; set; } = new ObservableCollection<Comando>();
+
         private Entry EtIP;
 
         private Entry EtPort;
 
         private Entry EtComando;
 
+        public Label LbValorStepper { get; private set; }
         public ObservableCollection<Comando> Comandos { get; set; }
-
+        public Stepper StTempoEspera { get; private set; }
         Button BtnTestarBotao { get; set; }
 
         Button BtnEditarBotao { get; set; }
-
+        public Button BtnApagarBotao { get; private set; }
         public ICommand TestarCommand { get; set; }
         public ICommand ApagarBotaoCommand { get; set; }
         public ICommand EditarBotaoCommand { get; set; }
@@ -35,10 +41,17 @@ namespace AppUDP.ViewModels
 
         public BotoesEditarViewModel(BotoesEditarPage botoesDetalhePage, Comando comando)
         {
+            Comando = comando;
+            LbValorStepper = botoesDetalhePage.FindByName<Label>("LbValorStepper");
             Comandos = new ObservableCollection<Comando>();
             botoesDetalhePage.Title = comando.Id == 0 ? "CRIAR" : "EDITAR";
+            StTempoEspera = botoesDetalhePage.FindByName<Stepper>("StTempoEspera");
+            StTempoEspera.ValueChanged += StTempoEspera_ValueChanged;
+            LbValorStepper.Text = StTempoEspera.Value.ToString();
             BtnTestarBotao = botoesDetalhePage.FindByName<Button>("BtnTestarBotao");
             BtnEditarBotao = botoesDetalhePage.FindByName<Button>("BtnEditarBotao");
+            BtnApagarBotao = botoesDetalhePage.FindByName<Button>("BtnApagarBotao");
+            BtnApagarBotao.IsVisible = Comando.Id != 0;
             BtnEditarBotao.Text = comando.Id == 0 ? "Criar" : "Editar";
             EtComando = botoesDetalhePage.FindByName<Entry>("EtComando");
             EtIP = botoesDetalhePage.FindByName<Entry>("EtIP");
@@ -47,8 +60,13 @@ namespace AppUDP.ViewModels
             EditarBotaoCommand = new Command(EditarBotao);
             TestarCommand = new Command(Testar);
             this.botoesDetalhePage = botoesDetalhePage;
-            this.Comando = comando;
+
             _udpService = new UdpService();
+        }
+
+        private void StTempoEspera_ValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            LbValorStepper.Text = e.NewValue.ToString();
         }
 
         private async void Testar(object obj)
@@ -75,7 +93,7 @@ namespace AppUDP.ViewModels
                 HabilitarBotao(BtnTestarBotao);
                 return;
             }
-            await _udpService.Broadcast(comando: Comando.Send, port: Comando.Port, ip: Comando.IP);
+            await _udpService.Broadcast(comando: Comando.Send, port: Comando.Port, ip: Comando.IP, timer: int.Parse(StTempoEspera.Value.ToString()));
 
             Comandos.Clear();
 
@@ -83,7 +101,25 @@ namespace AppUDP.ViewModels
             {
                 Comandos.Add(item);
             }
+            Vibrar(30);
             HabilitarBotao(BtnTestarBotao);
+        }
+
+        private void Vibrar(int duracao)
+        {
+            try
+            {
+                var duration = TimeSpan.FromMilliseconds(duracao);
+                Vibration.Vibrate(duration);
+            }
+            catch (FeatureNotSupportedException ex)
+            {
+                // Feature not supported on device
+            }
+            catch (Exception ex)
+            {
+                // Other error has occurred.
+            }
         }
 
         private void HabilitarBotao(Button button)
@@ -99,15 +135,19 @@ namespace AppUDP.ViewModels
         private async void EditarBotao(object obj)
         {
             await App.Database.SaveItemAsync(Comando);
+            
+            await botoesDetalhePage.DisplayAlert("Edição", $"Botão {(Comando.Id == 0 ? "criado" : "editado")} com sucesso.", "Fechar");
 
-            await botoesDetalhePage.DisplayAlert("Edição", "Botão editado com sucesso.", "Fechar");
+            App.Current.MainPage = new PrincipalPage();
         }
 
         private async void ApagarBotao(object obj)
         {
             await App.Database.DeleteItemAsync(Comando);
+
             await botoesDetalhePage.DisplayAlert("Apagado", "Botão apagado com sucesso.", "Fechar");
-            await botoesDetalhePage.Navigation.PushAsync(new BotoesPage());
+
+            App.Current.MainPage = new PrincipalPage();
         }
     }
 }
