@@ -22,7 +22,6 @@
                 <Label x:Name="LbValorStepper" Margin="10"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal" Spacing="10" HorizontalOptions="CenterAndExpand">
-                <Button Padding="10" HorizontalOptions="Start" x:Name="BtnTestarBotao" Text="Testar" Command="{Binding TestarCommand}"/>
                 <Button Padding="10" HorizontalOptions="Start" x:Name="BtnEditarBotao" Text="Editar" Command="{Binding EditarBotaoCommand}"/>
                 <Button Padding="10" HorizontalOptions="Start" x:Name="BtnApagarBotao" Text="Apagar" Command="{Binding ApagarBotaoCommand}"/>
                 <Button Padding="10" HorizontalOptions="Start" x:Name="BtnDuplicarBotao" Text="Duplicar" Command="{Binding DuplicarBotaoCommand}"/>
@@ -44,6 +43,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollView>
+            <Button Padding="10" HorizontalOptions="FillAndExpand" x:Name="BtnTestarBotao" Text="Testar" Command="{Binding TestarCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

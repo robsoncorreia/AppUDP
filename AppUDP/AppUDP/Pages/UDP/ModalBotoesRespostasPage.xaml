@@ -15,20 +15,20 @@
                                 <StackLayout Spacing="4" Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                                     <StackLayout Spacing="4" Padding="10">
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="IP : " FontSize="Micro" />
-                                            <Label Text="{Binding IP}" FontSize="Micro" />
+                                            <Label Text="IP : " FontSize="Medium" />
+                                            <Label Text="{Binding IP}" FontSize="Medium" />
                                         </StackLayout>
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="Porta: " FontSize="Micro" />
-                                            <Label Text="{Binding Port}" FontSize="Micro" />
+                                            <Label Text="Porta: " FontSize="Medium" />
+                                            <Label Text="{Binding Port}" FontSize="Medium" />
                                         </StackLayout>
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="Enviado: " FontSize="Micro" />
-                                            <Label Text="{Binding Send}" FontSize="Micro" />
+                                            <Label Text="Enviado: " FontSize="Medium" />
+                                            <Label Text="{Binding Send}" FontSize="Medium" />
                                         </StackLayout>
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="Recebido: " FontSize="Micro" />
-                                            <Label Text="{Binding Receive}" FontSize="Micro" />
+                                            <Label Text="Recebido: " FontSize="Medium" />
+                                            <Label Text="{Binding Receive}" FontSize="Medium" />
                                         </StackLayout>
                                     </StackLayout>
                                 </StackLayout>
