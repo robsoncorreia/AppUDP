@@ -42,7 +42,7 @@ namespace AppUDP.Service
         public static async Task Broadcast(string ip = null, int port = 9999, string comando = "oi", int timer = 1000)
         {
 
-            Responses  = new List<Comando>();
+            Responses = new List<Comando>();
 
             CancellationTokenSource tokenSource = new CancellationTokenSource();
 
@@ -57,9 +57,9 @@ namespace AppUDP.Service
 
                 byte[] bytes2 = Encoding.ASCII.GetBytes(comando);
 
-                listener.Send(bytes2, bytes2.Length, groupEP);
+                
 
-                //client.Close();
+                listener.Send(bytes2, bytes2.Length, groupEP);
 
                 try
                 {
@@ -73,12 +73,12 @@ namespace AppUDP.Service
 
                         Debug.WriteLine($" {Encoding.ASCII.GetString(bytes, 0, bytes.Length)}");
 
-                        Responses.Add(new Comando
-                        {
-                            Receive = Encoding.ASCII.GetString(bytes, 0, bytes.Length),
-                            IP = groupEP.Address.ToString(),
-                            Port = groupEP.Port
-                        });
+                        Comando com = new Comando { Send = comando };
+                        com.Receive = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
+                        com.IP = groupEP.Address.ToString();
+                        com.Port = groupEP.Port;
+                        Responses.Add(com);
+
                     }
                 }
                 catch (SocketException e)
@@ -108,8 +108,6 @@ namespace AppUDP.Service
             tokenSource.Cancel();
 
             Invertido();
-
-
 
         }
 

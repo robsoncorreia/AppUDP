@@ -227,7 +227,7 @@ namespace AppUDP.Models
 
         public override string ToString()
         {
-            return $"Send: {Send} \n Receive: {Receive}";
+            return $"IP: {IP} \n Porta: {Port} \n Data: {DateTime.ToString("dd/MM/yyy")} \n Enviado: {Send} \n Recebido: {Receive}";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

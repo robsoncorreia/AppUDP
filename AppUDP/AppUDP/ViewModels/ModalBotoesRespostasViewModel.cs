@@ -1,5 +1,6 @@
 ﻿using AppUDP.Models;
 using AppUDP.Pages.UDP;
+using Plugin.Clipboard;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,14 +16,24 @@ namespace AppUDP.ViewModels
         private ModalBotoesRespostasPage modalBotoesRespostasPage;
         public ObservableCollection<Comando> RespostasComandos { get; set; }
 
-        private Comando _respostaComandoSelecte;
+        private Comando _respostaComandoSelected;
 
-        public Comando RespostaComandoSelecte
+        public Comando RespostaComandoSelected
         {
-            get { return _respostaComandoSelecte; }
-            set { _respostaComandoSelecte = value; }
+            get { return _respostaComandoSelected; }
+            set
+            {
+                _respostaComandoSelected = value;
+                if (value == null) return;
+                CopiarComando(value);
+            }
         }
 
+        private async void CopiarComando(Comando value)
+        {
+            CrossClipboard.Current.SetText(value.ToString());
+            await modalBotoesRespostasPage.DisplayAlert("Copiado", "Informações do comando copiadas.", "Fechar");
+        }
 
         public ListView LwRespostasComandos { get; private set; }
 

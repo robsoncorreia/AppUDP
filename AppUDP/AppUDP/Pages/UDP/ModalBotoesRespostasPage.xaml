@@ -8,16 +8,28 @@
                 <ListView x:Name="LwRespostasComandos"
                           ItemsSource="{Binding RespostasComandos}" 
                           SelectedItem="{Binding RespostaComandoSelected}"
-                          IsEnabled="False"
                           HasUnevenRows = "true">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell >
                                 <StackLayout Spacing="4" Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                                     <StackLayout Spacing="4" Padding="10">
-                                        <Label Text="{Binding IP}" FontSize="Micro" />
-                                        <Label Text="{Binding Send}" FontSize="Micro" />
-                                        <Label Text="{Binding Receive}" FontSize="Micro" />
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="IP : " FontSize="Micro" />
+                                            <Label Text="{Binding IP}" FontSize="Micro" />
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Porta: " FontSize="Micro" />
+                                            <Label Text="{Binding Port}" FontSize="Micro" />
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Enviado: " FontSize="Micro" />
+                                            <Label Text="{Binding Send}" FontSize="Micro" />
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Recebido: " FontSize="Micro" />
+                                            <Label Text="{Binding Receive}" FontSize="Micro" />
+                                        </StackLayout>
                                     </StackLayout>
                                 </StackLayout>
                             </ViewCell>

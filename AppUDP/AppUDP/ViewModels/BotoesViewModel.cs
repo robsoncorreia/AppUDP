@@ -17,15 +17,6 @@ namespace AppUDP.ViewModels
 
         public ObservableCollection<Comando> RespostasComandos { get; set; }
 
-        private Comando _respostaComandoSelected;
-
-        public Comando RespostaComandoSelected
-        {
-            get { return _respostaComandoSelected; }
-            set { _respostaComandoSelected = value; }
-        }
-
-
         private ListView _lwComandos;
 
         private BotoesPage _botoesPage;

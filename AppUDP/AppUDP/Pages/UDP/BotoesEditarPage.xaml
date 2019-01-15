@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppUDP.Pages.UDP.BotoesEditarPage">
     <ContentPage.Content>
-        <StackLayout Spacing="10" Padding="10">
+        <StackLayout Spacing="10" Padding="10" HorizontalOptions="FillAndExpand">
             <Entry x:Name="EtIP" Text="{Binding Comando.IP}"
                    Placeholder="IP"
                    HorizontalOptions="FillAndExpand" />
@@ -21,10 +21,11 @@
                 <Stepper x:Name="StTempoEspera" Value="{Binding Comando.TempoEspera}" Minimum="99" Maximum="10000" Increment="100"/>
                 <Label x:Name="LbValorStepper" Margin="10"/>
             </StackLayout>
-            <StackLayout Orientation="Horizontal" Spacing="10">
+            <StackLayout Orientation="Horizontal" Spacing="10" HorizontalOptions="CenterAndExpand">
                 <Button Padding="10" HorizontalOptions="Start" x:Name="BtnTestarBotao" Text="Testar" Command="{Binding TestarCommand}"/>
                 <Button Padding="10" HorizontalOptions="Start" x:Name="BtnEditarBotao" Text="Editar" Command="{Binding EditarBotaoCommand}"/>
                 <Button Padding="10" HorizontalOptions="Start" x:Name="BtnApagarBotao" Text="Apagar" Command="{Binding ApagarBotaoCommand}"/>
+                <Button Padding="10" HorizontalOptions="Start" x:Name="BtnDuplicarBotao" Text="Duplicar" Command="{Binding DuplicarBotaoCommand}"/>
             </StackLayout>
             <ScrollView VerticalOptions="StartAndExpand">
                 <ListView SelectedItem="{Binding ComandoSelected}" 

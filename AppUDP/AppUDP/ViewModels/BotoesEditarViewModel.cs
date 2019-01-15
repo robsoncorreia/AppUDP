@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -34,6 +35,8 @@ namespace AppUDP.ViewModels
         public ICommand TestarCommand { get; set; }
         public ICommand ApagarBotaoCommand { get; set; }
         public ICommand EditarBotaoCommand { get; set; }
+
+        public ICommand DuplicarBotaoCommand { get; set; }
         private BotoesEditarPage botoesDetalhePage;
         public Comando Comando { get; set; }
 
@@ -59,9 +62,25 @@ namespace AppUDP.ViewModels
             ApagarBotaoCommand = new Command(ApagarBotao);
             EditarBotaoCommand = new Command(EditarBotao);
             TestarCommand = new Command(Testar);
+            DuplicarBotaoCommand = new Command(DuplicarBotao);
             this.botoesDetalhePage = botoesDetalhePage;
             UdpService.Invertido += UdpService_Invertido;
            /// _udpService = new UdpService();
+        }
+
+        private async void DuplicarBotao(object obj)
+        {
+            bool isValidos = await ValidarCampos();
+
+            if (!isValidos) return;
+
+            Comando.Id = 0;
+
+            await App.Database.SaveItemAsync(Comando);
+
+            await botoesDetalhePage.DisplayAlert("Dublicado", $"Botão dublicado com sucesso.", "Fechar");
+
+            App.Current.MainPage = new PrincipalPage();
         }
 
         private void UdpService_Invertido()
@@ -81,33 +100,41 @@ namespace AppUDP.ViewModels
 
         private async void Testar(object obj)
         {
-            IPAddress address;
-
             DesabilitarBotao(BtnTestarBotao);
 
-            if (!IPAddress.TryParse(EtIP.Text, out address))
-            {
-                await botoesDetalhePage.DisplayAlert("Erro", "IP inválido.", "Fechar");
-                HabilitarBotao(BtnTestarBotao);
-                return;
-            }
-            if (string.IsNullOrEmpty(EtPort.Text))
-            {
-                await botoesDetalhePage.DisplayAlert("Erro", "Preencha o campo Porta", "Fechar");
-                HabilitarBotao(BtnTestarBotao);
-                return;
-            }
-            if (string.IsNullOrEmpty(EtComando.Text))
-            {
-                await botoesDetalhePage.DisplayAlert("Erro", "Preencha o campo Comando", "Fechar");
-                HabilitarBotao(BtnTestarBotao);
-                return;
-            }
+            bool isValidos = await ValidarCampos();
+
+            if (!isValidos) return;
+            
             await UdpService.Broadcast(comando: Comando.Send, port: Comando.Port, ip: Comando.IP, timer: int.Parse(StTempoEspera.Value.ToString()));
 
             Vibrar(30);
 
             HabilitarBotao(BtnTestarBotao);
+        }
+
+        private async Task<bool> ValidarCampos()
+        {
+            IPAddress address;
+            if (!IPAddress.TryParse(EtIP.Text, out address))
+            {
+                await botoesDetalhePage.DisplayAlert("Erro", "IP inválido.", "Fechar");
+                HabilitarBotao(BtnTestarBotao);
+                return false;
+            }
+            if (string.IsNullOrEmpty(EtPort.Text))
+            {
+                await botoesDetalhePage.DisplayAlert("Erro", "Preencha o campo Porta", "Fechar");
+                HabilitarBotao(BtnTestarBotao);
+                return false;
+            }
+            if (string.IsNullOrEmpty(EtComando.Text))
+            {
+                await botoesDetalhePage.DisplayAlert("Erro", "Preencha o campo Comando", "Fechar");
+                HabilitarBotao(BtnTestarBotao);
+                return false;
+            }
+            return true;
         }
 
         private void Vibrar(int duracao)
