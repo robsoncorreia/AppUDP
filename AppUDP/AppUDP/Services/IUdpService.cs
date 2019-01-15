@@ -6,7 +6,9 @@ namespace AppUDP.Service
 {
     public interface IUdpService
     {
-        List<Comando> Responses { get; set; }
+        IList<Comando> Responses { get; set; }
+
+        event UdpService.GetRespostas Invertido;
 
         Task Broadcast(string ip = null, int port = 9999, string comando = "oi", int timer = 1000);
         void Send(string ip, string buf, int port = 6666);

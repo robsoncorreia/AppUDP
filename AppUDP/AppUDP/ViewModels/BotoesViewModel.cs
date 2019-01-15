@@ -13,6 +13,7 @@ namespace AppUDP.ViewModels
 {
     public class BotoesViewModel : BaseViewModel
     {
+        public Command AbrirModalRespostasCommand { get; set; }
 
         public ObservableCollection<Comando> RespostasComandos { get; set; }
 
@@ -52,11 +53,18 @@ namespace AppUDP.ViewModels
 
         public BotoesViewModel(BotoesPage botoesPage)
         {
+            AbrirModalRespostasCommand = new Command(AbrirModalRespostas);
+
             RespostasComandos = new ObservableCollection<Comando>();
             _botoesPage = botoesPage;
             _lwComandos = _botoesPage.FindByName<ListView>("LwComandos");
             PegarComandos();
             UdpService.Invertido += UdpService_Invertido;
+        }
+
+        private void AbrirModalRespostas(object obj)
+        {
+            _botoesPage.Navigation.PushModalAsync(new ModalBotoesRespostasPage(RespostasComandos));
         }
 
         private void UdpService_Invertido()
