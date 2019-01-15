@@ -14,7 +14,7 @@ namespace AppUDP.Models
     {
 
 
-        private readonly IUdpService updpService = new UdpService();
+       // private readonly IUdpService updpService = new UdpService();
 
         private int _tempoEsperaResposta = 100;
 
@@ -40,21 +40,6 @@ namespace AppUDP.Models
             }
         }
 
-
-
-        private string _respostaBotao;
-
-        public string RespostaBotao
-        {
-            get { return _respostaBotao; }
-            set
-            {
-                _respostaBotao = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-
         public ICommand ClickButtom
         {
             get
@@ -70,7 +55,7 @@ namespace AppUDP.Models
         private async void Enviar()
         {
             IsBotaoHabilitado = false;
-            RespostaBotao = await updpService.SendAsync(IP, Port, Send, TempoEspera);
+            await UdpService.Broadcast(IP, Port, Send, TempoEspera);
             Vibrar(30);
             IsBotaoHabilitado = true;
         }

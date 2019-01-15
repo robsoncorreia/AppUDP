@@ -8,19 +8,19 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace AppUDP.Service
 {
-    public class UdpService : IUdpService
+    public static class UdpService
     {
-        public List<Comando> Responses { get; set; }
+        public static IList<Comando> Responses { get; set; }
 
-        public UdpService()
-        {
-            Responses = new List<Comando>();
-        }
+        public delegate void GetRespostas();
 
-        public void Send(string ip, string buf, int port = 6666)
+        public static event GetRespostas Invertido;
+
+        public static void Send(string ip, string buf, int port = 6666)
         {
             Socket s = new Socket(AddressFamily.InterNetwork,
                                   SocketType.Dgram,
@@ -37,13 +37,12 @@ namespace AppUDP.Service
             s.Dispose();
         }
 
-        private UdpClient listener;
+        private static UdpClient listener;
 
-        public async Task Broadcast(string ip = null, int port = 9999, string comando = "oi", int timer = 1000)
+        public static async Task Broadcast(string ip = null, int port = 9999, string comando = "oi", int timer = 1000)
         {
-            int responses = 0;
 
-            Responses.Clear();
+            Responses  = new List<Comando>();
 
             CancellationTokenSource tokenSource = new CancellationTokenSource();
 
@@ -73,8 +72,6 @@ namespace AppUDP.Service
                         Debug.WriteLine($"Received broadcast from {groupEP} :");
 
                         Debug.WriteLine($" {Encoding.ASCII.GetString(bytes, 0, bytes.Length)}");
-
-                        responses++;
 
                         Responses.Add(new Comando
                         {
@@ -109,9 +106,16 @@ namespace AppUDP.Service
             listener.Close();
 
             tokenSource.Cancel();
+
+            Invertido();
+
+
+
         }
 
-        public async Task<string> SendAsync(string ip, int port, string Comando, int tempoEspera)
+
+
+        public static async Task<string> SendAsync(string ip, int port, string Comando, int tempoEspera)
         {
             string parseIp = IPAddress.Parse(ip).ToString();
 
@@ -125,8 +129,6 @@ namespace AppUDP.Service
 
             Comando com = new Comando(Comando, ip, port, "UDP");
 
-            int responses = 0;
-
             Task t1 = Task.Factory.StartNew(() =>
             {
                 using (UdpClient listener = new UdpClient(port))
@@ -137,8 +139,6 @@ namespace AppUDP.Service
                     {
                         if (listener?.Available > 0)
                         {
-                            responses++;
-
                             listener.EnableBroadcast = true;
 
                             byte[] bytes = listener.Receive(ref groupEP);
@@ -168,10 +168,7 @@ namespace AppUDP.Service
 
             tokenSource.Cancel();
 
-            if (responses == 0)
-            {
-                // Comandos.Add(com);
-            }
+
 
             return response;
         }

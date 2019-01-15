@@ -4,22 +4,44 @@
              Title="Botões"
              x:Class="AppUDP.Pages.UDP.BotoesPage">
     <ContentPage.Content>
-        <ScrollView>
-            <ListView x:Name="LwComandos" SelectedItem="{Binding SelectedComando}" ItemsSource="{Binding Comandos}" HasUnevenRows = "true">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell >
-                            <StackLayout Spacing="4" Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                                <Button IsEnabled="{Binding IsBotaoHabilitado}" Padding="10" Text="{Binding NomeBotao}" VerticalOptions="Center"  Command="{Binding ClickButtom}" />
-                                <StackLayout Spacing="4" Padding="10">
-                                    <Label Text="{Binding IP}" FontSize="Micro" />
-                                    <Label Text="{Binding Send}" FontSize="Micro" />
+        <StackLayout Spacing="10">
+            <ScrollView>
+                <ListView x:Name="LwComandos" SelectedItem="{Binding SelectedComando}" ItemsSource="{Binding Comandos}" HasUnevenRows = "true">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell >
+                                <StackLayout Spacing="4" Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                    <Button IsEnabled="{Binding IsBotaoHabilitado}" Padding="10" Text="{Binding NomeBotao}" VerticalOptions="Center"  Command="{Binding ClickButtom}" />
+                                    <StackLayout Spacing="4" Padding="10">
+                                        <Label Text="{Binding IP}" FontSize="Micro" />
+                                        <Label Text="{Binding Send}" FontSize="Micro" />
+                                    </StackLayout>
                                 </StackLayout>
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </ScrollView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
+            <ScrollView>
+                <ListView x:Name="LwRespostasComandos"
+                          ItemsSource="{Binding RespostasComandos}" 
+                          SelectedItem="{Binding RespostaComandoSelected}"
+                          HasUnevenRows = "true">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell >
+                                <StackLayout Spacing="4" Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                    <StackLayout Spacing="4" Padding="10">
+                                        <Label Text="{Binding IP}" FontSize="Micro" />
+                                        <Label Text="{Binding Send}" FontSize="Micro" />
+                                        <Label Text="{Binding Receive}" FontSize="Micro" />
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

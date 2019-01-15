@@ -1,15 +1,19 @@
 ﻿using AppUDP.Models;
 using AppUDP.Pages.UDP;
+using AppUDP.Service;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace AppUDP.ViewModels
 {
     public class BotoesViewModel : BaseViewModel
     {
-  
+
         public ObservableCollection<Comando> RespostasComandos { get; set; }
 
         private Comando _respostaComandoSelected;
@@ -51,14 +55,23 @@ namespace AppUDP.ViewModels
             RespostasComandos = new ObservableCollection<Comando>();
             _botoesPage = botoesPage;
             _lwComandos = _botoesPage.FindByName<ListView>("LwComandos");
-
             PegarComandos();
-            
+            UdpService.Invertido += UdpService_Invertido;
         }
 
-        private  void PegarComandos()
+        private void UdpService_Invertido()
         {
-            Comandos =  App.Database.GetItemsAsync().Result;
+            RespostasComandos.Clear();
+
+            foreach (var item in UdpService.Responses)
+            {
+                RespostasComandos.Add(item);
+            }
+        }
+
+        private void PegarComandos()
+        {
+            Comandos = App.Database.GetItemsAsync().Result;
         }
     }
 }

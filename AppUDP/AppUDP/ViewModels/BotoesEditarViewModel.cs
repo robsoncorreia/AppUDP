@@ -37,7 +37,7 @@ namespace AppUDP.ViewModels
         private BotoesEditarPage botoesDetalhePage;
         public Comando Comando { get; set; }
 
-        private readonly IUdpService _udpService;
+        // private readonly IUdpService _udpService;
 
         public BotoesEditarViewModel(BotoesEditarPage botoesDetalhePage, Comando comando)
         {
@@ -60,8 +60,18 @@ namespace AppUDP.ViewModels
             EditarBotaoCommand = new Command(EditarBotao);
             TestarCommand = new Command(Testar);
             this.botoesDetalhePage = botoesDetalhePage;
+            UdpService.Invertido += UdpService_Invertido;
+           /// _udpService = new UdpService();
+        }
 
-            _udpService = new UdpService();
+        private void UdpService_Invertido()
+        {
+            Comandos.Clear();
+
+            foreach (var item in UdpService.Responses)
+            {
+                Comandos.Add(item);
+            }
         }
 
         private void StTempoEspera_ValueChanged(object sender, ValueChangedEventArgs e)
@@ -93,15 +103,10 @@ namespace AppUDP.ViewModels
                 HabilitarBotao(BtnTestarBotao);
                 return;
             }
-            await _udpService.Broadcast(comando: Comando.Send, port: Comando.Port, ip: Comando.IP, timer: int.Parse(StTempoEspera.Value.ToString()));
+            await UdpService.Broadcast(comando: Comando.Send, port: Comando.Port, ip: Comando.IP, timer: int.Parse(StTempoEspera.Value.ToString()));
 
-            Comandos.Clear();
-
-            foreach (var item in _udpService.Responses)
-            {
-                Comandos.Add(item);
-            }
             Vibrar(30);
+
             HabilitarBotao(BtnTestarBotao);
         }
 

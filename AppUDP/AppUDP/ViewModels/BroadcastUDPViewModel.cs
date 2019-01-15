@@ -3,6 +3,7 @@ using AppUDP.Pages;
 using AppUDP.Pages.UDP;
 using AppUDP.Service;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -45,7 +46,7 @@ namespace AppUDP.ViewModels
             await _navigation.PushAsync(new BotoesEditarPage(value));
         }
 
-        private readonly IUdpService udpService;
+       // private readonly IUdpService udpService;
 
         public ICommand ActionBuscarCommand { get; set; }
         public ObservableCollection<Comando> Comandos { get; set; }
@@ -72,9 +73,21 @@ namespace AppUDP.ViewModels
 
             Comandos = new ObservableCollection<Comando>();
 
-            udpService = new UdpService();
+            //udpService = new UdpService();
 
             ActionBuscarCommand = new Command<object>(Buscar);
+
+            UdpService.Invertido += UdpService_Invertido;
+        }
+
+        private void UdpService_Invertido()
+        {
+            Comandos.Clear();
+
+            foreach (var item in UdpService.Responses)
+            {
+                Comandos.Add(item);
+            }
         }
 
         private void Tempo_Changed(object sender, ValueChangedEventArgs e)
@@ -90,14 +103,8 @@ namespace AppUDP.ViewModels
                 return;
             }
             DesabilitarBotao(BtnBuscar);
-            await udpService.Broadcast(comando: EtSend.Text, timer: int.Parse(Tempo.Value.ToString()));
+            await UdpService.Broadcast(comando: EtSend.Text, timer: int.Parse(Tempo.Value.ToString()));
             HabilitarBotao(BtnBuscar);
-            Comandos.Clear();
-
-            foreach (var item in udpService.Responses)
-            {
-                Comandos.Add(item);
-            }
         }
 
         private void HabilitarBotao(Button button)
